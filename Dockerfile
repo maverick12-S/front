@@ -1,23 +1,18 @@
-# ベースイメージとしてNode.jsを使用
+# ベースイメージ
 FROM node:16
 
-# 作業ディレクトリを設定
+# 作業ディレクトリ
 WORKDIR /app
 
-# package.json と package-lock.json をコピー
+# package.jsonをコピーして依存関係をインストール
 COPY package*.json ./
-
-# 依存関係をインストール
 RUN npm install
 
 # アプリケーションコードをコピー
 COPY . .
 
-# ビルド（必要であればプロダクションビルド）
+# ビルド
 RUN npm run build
 
-# ポート番号を公開
-EXPOSE 3000
-
 # サーバーを起動
-CMD ["npm", "start"]:
+CMD ["npm", "start"]
