@@ -8,3 +8,11 @@ export const getHelloMessage = async () => {
     // 修正点: response.text() を正しく呼び出す
     return response.text();
 };
+
+export const showDate = async () =>{
+    const response = await fetch(`${API_BASE_URL}/add`);
+    if(!response.ok){
+        throw new Error("Failed to fetch data");
+    }
+    return response.text();
+}
