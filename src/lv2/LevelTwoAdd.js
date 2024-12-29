@@ -9,16 +9,13 @@ const LevelTwoAdd = () => {
 
     const getFormItem = async (e) => {
         e.preventDefault();
-    
         if (!id || !name || !age) {
             setMessage("全てのフィールドを入力してください。");
             return;
         }
-    
         try {
             const profileData = await setProfileApi(id, name, age);
-            const responseText = await profileData.text(); // プレーンテキストを処理
-            setMessage(responseText); // テキストをメッセージに設定
+            setMessage(profileData.message); // テキストをメッセージに設定
         } catch (error) {
             setMessage(`エラーが発生しました: ${error.message}`);
         }
