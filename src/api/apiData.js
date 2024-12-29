@@ -15,3 +15,20 @@ export const getProfileApi = async (id) => {
 
     return response.json();
 }
+
+export const setProfileApi = async (id,name,age) =>{
+    const response = await fetch(`${API_BASE_URL}/add`,{
+        method: "POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({id,name,age}),
+    });
+
+    if(!response.ok){
+        const errorData = await response.json();
+        throw new Error(`Failed to fetch data: ${errorData.message || "Unknown error"}`);
+    }
+
+    return response.json();
+}
