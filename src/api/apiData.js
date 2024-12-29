@@ -34,6 +34,24 @@ export const getProfileApi = async (id) => {
     return response.json();
 }
 
+
+export const deleteProfileApi = async (id) => {
+    const response = await fetch(`${API_BASE_URL}/delete`,{
+        method: "POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({id}),
+    });
+
+    if(!response.ok){
+        throw new Error("Failed to fetch data");
+    }
+
+    return response.json();
+}
+
+
 export const setProfileApi = async (id,name,age) =>{
     const response = await fetch(`${API_BASE_URL}/add`,{
         method: "POST",

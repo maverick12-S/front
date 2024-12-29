@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { getProfileApi, getAllProfileApi } from "../api/apiData"; // 必要なAPIをインポート
+import { getProfileApi, getAllProfileApi, deleteProfileApi } from "../api/apiData"; // 必要なAPIをインポート
 
 const LevelTwo = () => {
   const [id, setId] = useState(""); // ID入力用
+  const [deleteId, setDeleteId] = useState(""); // 削除用ID
   const [name, setName] = useState(""); // 名前の表示用
   const [age, setAge] = useState(""); // 年齢の表示用
   const [accounts, setAccounts] = useState([]); // すべてのアカウントデータ用
   const [isVisible, setIsVisible] = useState(false); // リストの表示状態
+  const [message, setMessage] = useState(""); // メッセージ表示
 
   // 全プロフィールを検索
-  const serchAllProfile = async () => {
+  const searchAllProfile = async () => {
     try {
       const profileAllData = await getAllProfileApi(); // API 呼び出し
 
@@ -25,7 +27,7 @@ const LevelTwo = () => {
   };
 
   // 単一プロフィールを検索
-  const serchProfile = async (e) => {
+  const searchProfile = async (e) => {
     e.preventDefault();
     try {
       const profileData = await getProfileApi(id); // ID に基づく検索
@@ -38,13 +40,27 @@ const LevelTwo = () => {
     }
   };
 
+  // プロフィールを削除
+  const deleteProfile = async (e) => {
+    e.preventDefault();
+    try {
+      const profileData = await deleteProfileApi(deleteId); // ID に基づいて削除
+      setMessage(profileData.message); // メッセージを表示
+      setDeleteId(""); // 削除フォームをリセット
+      await searchAllProfile(); // アカウントリストを更新
+    } catch (error) {
+      console.error("Error deleting profile:", error);
+      setMessage(error.message || "エラーが発生しました");
+    }
+  };
+
   return (
     <div>
       <h1>Level 2 Page</h1>
       <p>リソースサーバーのDBからRestApiを用いてデータ取得</p>
 
       {/* ID検索フォーム */}
-      <form onSubmit={serchProfile}>
+      <form onSubmit={searchProfile}>
         <input
           type="text"
           placeholder="IDを入力"
@@ -61,7 +77,7 @@ const LevelTwo = () => {
       </div>
 
       {/* 全プロフィール取得ボタン */}
-      <button onClick={serchAllProfile}>Show Accounts</button>
+      <button onClick={searchAllProfile}>Show Accounts</button>
 
       {/* 全プロフィールリスト */}
       {isVisible && (
@@ -69,11 +85,27 @@ const LevelTwo = () => {
           {accounts.map((account, index) => (
             <li key={index}>
               <strong>ID:</strong> {account.id}, <strong>Name:</strong> {account.name},{" "}
-              <strong>Age:</strong> {account.age}, <strong>Valid:</strong> {account.valid ? "Yes" : "No"}
+              <strong>Age:</strong> {account.age}
             </li>
           ))}
         </ul>
       )}
+
+      {/* プロフィール削除フォーム */}
+      <form onSubmit={deleteProfile}>
+        <input
+          type="text"
+          placeholder="削除するIDを入力"
+          value={deleteId}
+          onChange={(e) => setDeleteId(e.target.value)}
+        />
+        <button type="submit">削除</button>
+      </form>
+
+      {/* メッセージ表示 */}
+      <div>
+        <p>{message}</p>
+      </div>
     </div>
   );
 };
