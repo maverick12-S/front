@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getHelloMessage, formCallApi } from "./api/api";
 import LevelTwo from "./lv2/LevelTwo";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import LevelTwoAdd from "./lv2/LevelTwoAdd";
 
 // LevelOneの定義
 const LevelOne = ({ message, name, setName, handleSubmit, responseMessage }) => {
@@ -63,6 +64,9 @@ function App() {
             <li>
               <Link to="/level2">Level Two</Link>
             </li>
+            <li>
+              <Link to="/Level2Add">Level Two Add User</Link>
+            </li>
           </ul>
         </nav>
 
@@ -80,7 +84,11 @@ function App() {
             }
           />
           <Route path="/level2" element={<LevelTwo />} />
+          <Route path="/level2Add" element={<LevelTwoAdd/>} />
         </Routes>
+        
+        
+        
       </div>
     </Router>
   );
